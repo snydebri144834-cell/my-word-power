@@ -4,13 +4,51 @@
   <meta charset="UTF-8">
   <title>我的词汇学习站</title>
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
+  <style>
+    /* 让卡片看起来像个卡片 */
+    .word-card {
+      border: 2px solid #42b983;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+      background: #ffffff;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+    .word-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+    /* 默认隐藏释义 */
+    .word-content { 
+      display: none; 
+      margin-top: 15px; 
+      padding-top: 15px; 
+      border-top: 1px dashed #ddd; 
+      color: #444;
+    }
+    .hint { color: #42b983; font-size: 0.8em; }
+  </style>
 </head>
 <body>
-  <div id="app">正在为你加载单词实验室...</div>
+  <div id="app">正在连接单词大脑...</div>
   <script>
     window.$docsify = {
-      name: 'Word Power Made Easy',
-      loadSidebar: false, // 刚开始我们先不用侧边栏，简单点
+      name: 'WPME 学习站',
+      // 让点击卡片的交互生效
+      plugins: [
+        function(hook) {
+          hook.doneEach(function() {
+            document.querySelectorAll('.word-card').forEach(card => {
+              // 添加提示文字
+              if(!card.querySelector('.hint')) {
+                card.insertAdjacentHTML('afterbegin', '<span class="hint">🖱️ 点击翻转卡片</span><br>');
+              }
+              card.onclick = function() {
+                const content = this.querySelector('.word-content');
+                content.style.display = content.style.display === 'none' ? 'block' : 'none';
+              };
+            });
+          });
+        }
+      ]
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
